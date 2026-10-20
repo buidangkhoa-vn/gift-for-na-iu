@@ -1,5 +1,6 @@
-# Ảnh gốc ở thư mục gốc repo: bản dùng cho web đã nằm trong qua-tang/anh/
+# Ảnh gốc để lẻ ở thư mục gốc (ảnh trang web dùng nằm trong photo/)
 /*.jpg
 /*.JPG
 /*.jpeg
 /*.JPEG
+/_anh-goc/

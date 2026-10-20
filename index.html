@@ -2,12 +2,212 @@
 <html lang="vi">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Một món quà cho em</title>
-<meta http-equiv="refresh" content="0; url=qua-tang/">
-<script>location.replace('qua-tang/' + location.search + location.hash);</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Patrick+Hand&family=Sriracha&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<script src="noi-dung.js" defer></script>
+<script src="js/book.js" defer></script>
+<script src="js/intro.js" defer></script>
 </head>
-<body style="background:#f7f3ea;font-family:sans-serif;text-align:center;padding-top:40vh">
-<a href="qua-tang/">Mở quà</a>
+<body>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<!-- ========== 1. màn tải ========== -->
+<section class="scene on" id="sLoad" aria-live="polite">
+  <div class="ld">
+    <svg viewBox="0 0 60 60" aria-hidden="true"><path d="M30 30m-2.5 0a2.5 2.5 0 1 1 5 0a6 6 0 1 1-10.5 1.5a10 10 0 1 1 18-3a14 14 0 1 1-24 9" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
+    <h1>Đang gói quà</h1>
+    <p>Hoa đang được tưới, đợi xíu là xong nha.</p>
+    <div class="ld-bar"><i id="ldBar"></i></div>
+  </div>
+</section>
+
+<!-- ========== 2. phong bì ========== -->
+<section class="scene" id="sEnv" aria-label="Phong bì">
+  <div class="env-wrap">
+    <button class="env" id="envBtn" type="button" aria-label="Mở phong bì">
+      <span class="env-back"></span>
+      <svg class="env-front" viewBox="0 0 145 100" preserveAspectRatio="none" aria-hidden="true">
+        <polygon points="0,0 72.5,56 0,100" fill="#ecd7b5"/>
+        <polygon points="145,0 72.5,56 145,100" fill="#e8d0aa"/>
+        <polygon points="0,100 72.5,50 145,100" fill="#f3e3c8"/>
+        <path d="M0 100L72.5 50L145 100M0 0L72.5 56L145 0" fill="none" stroke="rgba(150,110,70,.3)" stroke-width=".6"/>
+      </svg>
+      <span class="env-flap">
+        <span class="fl-front"><img class="flap-flower a" src="assets/hoa/wildRose.webp" alt=""><img class="flap-flower b" src="assets/hoa/pinkBlossom.webp" alt=""></span>
+        <span class="fl-back"></span>
+      </span>
+      <span class="seal"><svg viewBox="-10 -10 20 20" aria-hidden="true"><g fill="none" stroke="rgba(255,255,255,.45)" stroke-width=".7"><ellipse cx="0" cy="-3.2" rx="2" ry="3"/><ellipse cx="0" cy="-3.2" rx="2" ry="3" transform="rotate(72)"/><ellipse cx="0" cy="-3.2" rx="2" ry="3" transform="rotate(144)"/><ellipse cx="0" cy="-3.2" rx="2" ry="3" transform="rotate(216)"/><ellipse cx="0" cy="-3.2" rx="2" ry="3" transform="rotate(288)"/><circle r="6.8" stroke-dasharray="1 1.4"/></g></svg></span>
+    </button>
+    <p class="env-hint">Chạm để mở</p>
+  </div>
+</section>
+
+<!-- ========== 3. cuốn sổ ========== -->
+<section class="scene" id="sBook" aria-label="Cuốn sổ" inert>
+  <img class="decor d-tl" src="assets/hoa/dahliaBlue.webp" alt="">
+  <img class="decor d-br" src="assets/hoa/blueWc.webp" alt="">
+  <svg class="decor d-rib" viewBox="0 0 300 300" aria-hidden="true">
+    <defs><linearGradient id="ribG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8fd6cc"/><stop offset=".5" stop-color="#4fa89e"/><stop offset="1" stop-color="#7fcfc4"/></linearGradient></defs>
+    <path d="M310 30C240 10 205 60 170 70S110 40 90 80 150 150 120 190 40 200 20 260" fill="none" stroke="url(#ribG)" stroke-width="22" stroke-linecap="round"/>
+    <path d="M310 30C240 10 205 60 170 70S110 40 90 80 150 150 120 190 40 200 20 260" fill="none" stroke="rgba(255,255,255,.45)" stroke-width="5" stroke-linecap="round" transform="translate(-3 -4)"/>
+  </svg>
+  <div class="decor d-leo"></div>
+
+  <div class="stage" id="stage">
+    <div class="book" id="book">
+
+      <!-- tờ 1: bìa | trang 1 -->
+      <div class="leaf">
+        <div class="face front bg-stripes">
+          <div class="doily" style="left:9cqi;top:16cqi;width:82cqi"></div>
+          <div class="ransom" data-text="bia0" style="left:22cqi;top:42cqi;font-size:8.5cqi"></div>
+          <div class="ransom" data-text="bia1" style="left:36cqi;top:56cqi;font-size:8.5cqi"></div>
+          <div class="stk" data-stk="starRed" style="left:74cqi;top:33cqi;width:10cqi;rotate:12deg"></div>
+          <figure class="pol" style="left:4cqi;top:74cqi;width:30cqi;rotate:-7deg"><div class="ph" data-n="1"></div><span class="cap"></span></figure>
+          <figure class="pol" style="left:33cqi;top:84cqi;width:30cqi;rotate:7deg"><div class="ph" data-n="2"></div><span class="cap"></span></figure>
+          <span class="tape t-kraft" style="left:7cqi;top:72cqi;width:16cqi;rotate:-12deg"></span>
+          <div class="bq" style="right:-3cqi;bottom:-3cqi;width:40cqi;rotate:-6deg"></div>
+        </div>
+        <div class="face back bg-cream">
+          <div class="spiral"></div>
+          <div class="ransom" data-text="tieuDe" style="left:13cqi;top:7cqi;font-size:10cqi"></div>
+          <div class="note-lined" style="left:58cqi;top:2cqi;width:38cqi;rotate:2deg"><div class="stk" data-stk="paperclip" style="left:4cqi;top:-3cqi;width:6cqi"></div><span data-text="trichDan1"></span></div>
+          <div class="snap" style="left:13cqi;top:24cqi;width:48cqi;rotate:-3deg"><div class="ph" data-n="3" style="aspect-ratio:4/5"></div></div>
+          <div class="stk" data-stk="ribbonBow" style="left:12cqi;top:20cqi;width:13cqi;rotate:-14deg"></div>
+          <div class="snap torn" style="left:56cqi;top:30cqi;width:39cqi;rotate:4deg"><div class="ph" data-n="4" style="aspect-ratio:1"></div></div>
+          <div class="stk" data-stk="shootingStar" style="left:83cqi;top:58cqi;width:13cqi"></div>
+          <div class="note-kraft torn" style="left:13cqi;top:81cqi;width:41cqi;rotate:-4deg;font-size:3.5cqi;padding:4cqi 3.5cqi"><div class="inner" data-text="trichDan2"></div></div>
+          <div class="doodle" data-stk="heartDoodle" style="left:47cqi;top:100cqi;width:8cqi;rotate:12deg"></div>
+          <div class="cam" style="left:53cqi;top:70cqi;width:44cqi;rotate:6deg"><div class="ph" data-n="5"></div></div>
+          <div class="tix" style="left:44cqi;top:116cqi;rotate:-10deg"><div class="m"><span>Thẻ lên máy bay</span><b data-text="veTuyen"></b><span data-text="veGhiChu"></span></div><div class="s"></div></div>
+          <div class="bq" style="left:1cqi;top:108cqi;width:24cqi;rotate:4deg"></div>
+        </div>
+      </div>
+
+      <!-- tờ 2: trang 2 (lá bài) | trang 3 -->
+      <div class="leaf">
+        <div class="face front bg-leopard">
+          <div class="cards" id="cards">
+            <div class="card"><div class="ph" data-n="6"></div></div>
+            <div class="card"><div class="ph" data-n="7"></div></div>
+            <div class="card"><div class="ph" data-n="8"></div></div>
+            <div class="card"><div class="ph" data-n="9"></div></div>
+            <div class="fan">
+              <div class="card ace l"></div>
+              <div class="card ace r"></div>
+              <div class="card"><div class="ph" data-n="10"></div></div>
+            </div>
+            <div class="card"><div class="ph" data-n="11"></div></div>
+            <div class="card"><div class="ph" data-n="12"></div></div>
+            <div class="card"><div class="ph" data-n="13"></div></div>
+            <div class="card"><div class="ph" data-n="14"></div></div>
+          </div>
+        </div>
+        <div class="face back bg-crumple" style="--crumple-at:0% 0%">
+          <div class="script-paper torn" style="left:40cqi;top:4cqi;width:54cqi;height:66cqi;rotate:3deg"></div>
+          <div class="strip" style="left:7cqi;top:6cqi;width:33cqi;rotate:-4deg"><div class="ph" data-n="15"></div><div class="ph" data-n="16"></div><div class="ph" data-n="17"></div><div class="ph" data-n="18"></div></div>
+          <span class="tape t-mint" style="left:14cqi;top:3cqi;width:18cqi;rotate:4deg"></span>
+          <div class="lined-list" style="left:42cqi;top:56cqi;width:54cqi;rotate:-1.5deg"><h3>Những lần đầu</h3><ol id="firsts"></ol></div>
+          <div class="stk" data-stk="planeTrail" style="left:46cqi;top:44cqi;width:30cqi;rotate:-6deg"></div>
+          <div class="doodle" data-stk="flowerDoodle" style="left:30cqi;top:112cqi;width:14cqi;rotate:-10deg"></div>
+          <div class="stk" data-stk="starGold" style="left:84cqi;top:116cqi;width:11cqi;rotate:16deg"></div>
+          <div class="stk" data-stk="paperclipPink" style="left:47cqi;top:52cqi;width:5cqi;rotate:-10deg"></div>
+        </div>
+      </div>
+
+      <!-- tờ 3: trang 4 | trang 5 -->
+      <div class="leaf">
+        <div class="face front bg-leopard">
+          <div class="cam" style="left:5cqi;top:4cqi;width:30cqi;rotate:-4deg;padding:2cqi 8cqi 2cqi 2cqi"><div class="ph" data-n="19"></div></div>
+          <div class="snap torn" style="left:37cqi;top:5cqi;width:50cqi;rotate:2deg"><div class="ph" data-n="20" style="aspect-ratio:4/3"></div></div>
+          <div class="round-stk" style="right:2cqi;top:2cqi;width:17cqi;background:#f7a8c0;color:#9b1747;rotate:-12deg">ngọt<br>như đào</div>
+          <div class="stk" data-stk="smiley" style="left:3cqi;top:34cqi;width:12cqi"></div>
+          <div class="snap" style="left:10cqi;top:40cqi;width:54cqi;rotate:-2deg"><div class="ph" data-n="21" style="aspect-ratio:4/3"></div></div>
+          <div class="snap torn" style="left:58cqi;top:48cqi;width:38cqi;rotate:5deg"><div class="ph" data-n="22" style="aspect-ratio:1"></div></div>
+          <div class="stk" data-stk="rainbow" style="left:56cqi;top:40cqi;width:16cqi;rotate:-8deg"></div>
+          <div class="stk" data-stk="clipPink" style="left:82cqi;top:44cqi;width:9cqi;rotate:10deg"></div>
+          <div class="snap torn" style="left:14cqi;top:86cqi;width:58cqi;rotate:-3deg"><div class="ph" data-n="23" style="aspect-ratio:16/10"></div></div>
+          <div class="xoxo" style="left:8cqi;top:79cqi;rotate:-10deg">xoxo</div>
+          <div class="stk" data-stk="binderBlue" style="left:56cqi;top:80cqi;width:14cqi;rotate:12deg"></div>
+          <div class="round-stk" style="right:3cqi;top:110cqi;width:18cqi;background:#bfe3f2;color:#14507a;rotate:10deg">chua chua<br>ngọt ngọt</div>
+          <div class="doodle" data-stk="heartsTrio" style="left:3cqi;top:118cqi;width:14cqi"></div>
+        </div>
+        <div class="face back bg-crumple" style="--crumple-at:100% 35%">
+          <figure class="pol" style="left:30cqi;top:8cqi;width:40cqi"><div class="ph" data-n="24"></div><span class="cap" data-text="miniEm"></span></figure>
+          <div class="big-sign" style="left:42cqi;top:60cqi">+</div>
+          <figure class="pol" style="left:30cqi;top:84cqi;width:40cqi"><div class="ph" data-n="25"></div><span class="cap" data-text="miniAnh"></span></figure>
+        </div>
+      </div>
+
+      <!-- tờ 4: trang 6 | trang 7 -->
+      <div class="leaf">
+        <div class="face front bg-crumple" style="--crumple-at:20% 100%">
+          <div class="big-sign" style="left:2cqi;top:52cqi">=</div>
+          <div class="doily" style="left:18cqi;top:18cqi;width:76cqi"></div>
+          <div class="ph" data-n="26" style="left:31cqi;top:35cqi;width:50cqi;aspect-ratio:4/3;border-radius:3cqi;z-index:4;box-shadow:0 .8cqi 2cqi rgba(30,30,50,.25)"></div>
+          <div class="us-word" style="top:96cqi" data-text="tuiMinh"></div>
+          <div class="bq" style="right:-4cqi;bottom:-3cqi;width:34cqi;rotate:-4deg"></div>
+        </div>
+        <div class="face back bg-dots">
+          <h2 class="page-title" style="left:9cqi;top:7cqi;margin:0">Một bó hoa ép cho em</h2>
+          <p class="page-sub" style="left:9cqi;top:17cqi;width:76cqi;margin:0">Hoa ngoài kia rồi sẽ héo, còn hoa ép vào sổ thì ở lại mãi.</p>
+          <div class="spec" style="left:28cqi;top:28cqi;width:44cqi;--d:.1s"><img src="assets/hoa/roses3.webp" alt=""><span class="tape t-pink" style="left:30%;bottom:-2cqi;width:16cqi;rotate:-8deg"></span></div>
+          <div class="tag" style="left:66cqi;top:56cqi;rotate:-4deg">hoa hồng</div>
+          <div class="spec" style="left:4cqi;top:58cqi;width:36cqi;--d:.35s"><img src="assets/hoa/peonySticker.webp" alt=""><span class="tape t-kraft" style="left:20%;top:-1cqi;width:14cqi;rotate:10deg"></span></div>
+          <div class="tag" style="left:8cqi;top:92cqi;rotate:5deg">mẫu đơn</div>
+          <div class="spec" style="left:58cqi;top:64cqi;width:36cqi;--d:.6s"><img src="assets/hoa/carnation.webp" alt=""><span class="tape t-mint" style="left:24%;bottom:-1cqi;width:14cqi;rotate:-6deg"></span></div>
+          <div class="tag" style="left:62cqi;top:100cqi;rotate:-6deg">cẩm chướng</div>
+          <div class="spec" style="left:32cqi;top:86cqi;width:30cqi;--d:.85s"><img src="assets/hoa/wildRose.webp" alt=""><span class="tape t-plaid" style="left:22%;top:-1cqi;width:13cqi;rotate:-12deg"></span></div>
+          <div class="spec" style="left:8cqi;top:104cqi;width:24cqi;--d:1.05s"><img src="assets/hoa/pinkBlossom.webp" alt=""></div>
+          <div class="spec" style="left:62cqi;top:108cqi;width:32cqi;--d:1.25s"><img src="assets/hoa/azalea.webp" alt=""></div>
+          <div class="tag" style="left:38cqi;top:126cqi;rotate:3deg" data-text="tuAnh"></div>
+        </div>
+      </div>
+
+      <!-- tờ 5: trang 8 (phiếu cào) | lá thư -->
+      <div class="leaf">
+        <div class="face front bg-grid">
+          <h2 class="page-title" style="left:9cqi;top:8cqi;margin:0">Anh có điều muốn nói</h2>
+          <p class="page-sub" style="left:9cqi;top:18cqi;margin:0">Lấy ngón tay cào lớp bạc bên dưới nhé.</p>
+          <div class="ticket" id="ticket" style="left:8cqi;top:30cqi;width:84cqi;height:50cqi">
+            <div class="ticket-in"><p class="big" data-text="phieuLon"></p><p class="small" data-text="phieuNho"></p></div>
+            <canvas class="foil" id="foil" aria-hidden="true"></canvas>
+            <div class="burst" id="burst"></div>
+          </div>
+          <p class="after-reveal" style="top:84cqi;margin:0">Giữ phiếu này nha, không có hạn sử dụng đâu.</p>
+          <div class="movie" style="left:12cqi;top:100cqi;rotate:-4deg"><div class="m"><b>Vé xem phim</b><span>Suất 19:30</span><span>Hàng F, ghế 7 và 8</span></div><div class="s">2 vé</div></div>
+          <div class="stk" data-stk="starGold" style="left:76cqi;top:104cqi;width:12cqi;rotate:-10deg"></div>
+          <div class="doodle" data-stk="heartDoodle" style="left:80cqi;top:122cqi;width:9cqi"></div>
+        </div>
+        <div class="face back" style="background:#efe9dc">
+          <div class="newsp" id="news1" style="left:-3cqi;top:-2cqi;width:24cqi;height:143cqi;rotate:1deg"></div>
+          <div class="gridp torn" style="right:-4cqi;top:-3cqi;width:48cqi;height:30cqi;rotate:-3deg"></div>
+          <div class="letter-paper torn" style="left:12cqi;top:10cqi;width:82cqi;height:96cqi;rotate:-.6deg"></div>
+          <div class="stk" data-stk="glitterStar" style="left:4cqi;top:3cqi;width:20cqi;rotate:-8deg"></div>
+          <div class="heart-label" style="left:37cqi;top:2cqi;width:30cqi"><svg viewBox="0 0 100 86" aria-hidden="true"><path d="M50 82C18 60 4 42 8 24 12 6 36 2 50 22 64 2 88 6 92 24 96 42 82 60 50 82Z" fill="#f7f3ea" stroke="#2b2b33" stroke-width="1.6"/></svg><span style="top:30%" data-html="nhanTraiTim"></span></div>
+          <div class="stk" data-stk="planeTrail" style="right:2cqi;top:6cqi;width:34cqi;rotate:-12deg"></div>
+          <div class="doodle" data-stk="asterisk" style="left:3cqi;top:62cqi;width:7cqi"></div>
+          <div class="doodle" data-stk="asterisk" style="left:50cqi;top:101cqi;width:5cqi"></div>
+          <div class="letter-text" id="letterText" style="left:18cqi;top:30cqi;width:70cqi;height:72cqi"></div>
+          <div class="script-paper torn" style="left:34cqi;top:104cqi;width:60cqi;height:34cqi;rotate:-4deg"></div>
+          <div class="stk" data-stk="camera" style="left:60cqi;top:110cqi;width:34cqi;rotate:8deg"></div>
+          <div class="bq" style="left:4cqi;top:104cqi;width:32cqi;rotate:-5deg"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <nav class="bnav" aria-label="Lật trang">
+    <button class="nb" id="prevBtn" type="button" aria-label="Trang trước"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <span class="blabel" id="bLabel" aria-live="polite">Bìa</span>
+    <button class="nb" id="nextBtn" type="button" aria-label="Trang sau"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+  </nav>
+  <p class="bhint off" id="bHint"></p>
+</section>
 </body>
 </html>
