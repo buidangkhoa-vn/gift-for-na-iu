@@ -1,0 +1,2 @@
+Đặt ảnh của hai người vào thư mục này, đặt tên 01.jpg, 02.jpg ... 26.jpg.
+Xem bảng vị trí từng số trong file HUONG-DAN.txt ở thư mục ngoài.
