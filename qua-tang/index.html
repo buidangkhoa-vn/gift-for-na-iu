@@ -64,35 +64,25 @@ body{
 .ld-bar{ width:min(70vw, 300px); height:8px; margin-top:.5rem; border-radius:99px; background:var(--bar-track); overflow:hidden; }
 .ld-bar i{ display:block; width:0; height:100%; border-radius:inherit; background:var(--bar); transition:width .3s ease; }
 
-#sWish{ z-index:40; pointer-events:none; }
-.w-top{ position:absolute; left:0; right:0; top:max(18px, env(safe-area-inset-top,0px)); padding:0 16px; text-align:center; color:var(--wish-ink); }
-.w-top small{ display:block; font-family:'Lora', Georgia, serif; font-size:clamp(.95rem, 3.4vw, 1.05rem); color:var(--wish-soft); }
-.w-top h1{ margin:.15rem 0 .6rem; font-family:'Lora', Georgia, serif; font-style:italic; font-weight:500; font-size:clamp(2.1rem, 7.5vw, 3.3rem); line-height:1.1; }
-.w-dots{ display:flex; justify-content:center; gap:10px; }
-.w-dots i{ width:11px; height:11px; box-sizing:border-box; border-radius:50%; border:1.5px solid var(--wish-soft); transition:background .3s, transform .3s; }
-.w-dots i.on{ background:var(--wish-ink); border-color:var(--wish-ink); transform:scale(.85); }
-.w-bottom{ position:absolute; left:0; right:0; bottom:max(22px, env(safe-area-inset-bottom,0px)); padding:0 16px; text-align:center; }
-.w-hint{ display:inline-block; margin:0; padding:.7rem 1.2rem; border-radius:99px; background:var(--hint-bg); color:var(--hint-ink); font-weight:600; font-size:.95rem; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
-.blow{ position:fixed; z-index:45; margin:0; padding:0; border:0; border-radius:50%; background:transparent; cursor:pointer; touch-action:manipulation; -webkit-touch-callout:none; user-select:none; -webkit-user-select:none; }
-.blow::after{ content:''; position:absolute; inset:8%; border-radius:50%; border:2px solid var(--ring); animation:ring 1.9s ease-out infinite; }
-.blow.used::after{ display:none; }
-.blow:focus-visible{ outline:3px solid var(--focus); outline-offset:2px; }
-@keyframes ring{ from{ transform:scale(.72); opacity:.95; } to{ transform:scale(1.15); opacity:0; } }
-
 #sEnv{ z-index:10; display:grid; place-items:center; background-color:var(--bg); background-image:radial-gradient(80% 60% at 50% 40%, var(--bg-2), transparent 70%); }
 .env-wrap{ display:grid; justify-items:center; gap:clamp(28px, 7vh, 64px); }
-.env{ --ew:min(66vw, 330px); position:relative; width:var(--ew); aspect-ratio:1.45; margin:0; padding:0; border:0; background:transparent; cursor:pointer; perspective:900px; filter:drop-shadow(0 14px 18px rgba(80,60,40,.22)); }
+.env{ --ew:min(66vw, 330px); position:relative; width:var(--ew); aspect-ratio:1.45; margin:0; padding:0; border:0; background:transparent; cursor:pointer; perspective:900px; }
 .env:focus-visible{ outline:3px solid var(--focus); outline-offset:8px; border-radius:6px; }
-.env-back{ position:absolute; inset:0; border-radius:5px; background:radial-gradient(60% 50% at 30% 30%, rgba(255,255,255,.25), transparent 70%), #d6b98e; }
+.env-back{ position:absolute; inset:0; border-radius:5px; box-shadow:0 14px 26px -8px rgba(80,60,40,.35); background:radial-gradient(60% 50% at 30% 30%, rgba(255,255,255,.25), transparent 70%), #d6b98e; }
 .env-front{ position:absolute; inset:0; z-index:2; width:100%; height:100%; }
-.env-flap{ position:absolute; left:0; right:0; top:0; z-index:3; height:58%; transform-origin:top center; transform-style:preserve-3d; transition:transform .8s cubic-bezier(.4,.1,.2,1); }
-.fl-front, .fl-back{ position:absolute; inset:0; clip-path:polygon(0 0, 100% 0, 50% 100%); backface-visibility:hidden; -webkit-backface-visibility:hidden; }
+.env-flap{ position:absolute; left:0; right:0; top:0; z-index:3; height:58%; transform-origin:top center; }
+.fl-front, .fl-back{ position:absolute; inset:0; clip-path:polygon(0 0, 100% 0, 50% 100%); }
 .fl-front{ background:radial-gradient(45% 60% at 72% 18%, rgba(196,150,100,.22), transparent 70%), radial-gradient(35% 50% at 20% 30%, rgba(255,255,255,.35), transparent 70%), linear-gradient(180deg, #f7ead6, #eedcbf); }
-.fl-back{ background:#e4cda8; transform:rotateX(180deg); }
+.fl-back{ opacity:0; background:linear-gradient(180deg, #cfb185, #e6d0ab 70%); }
 .flap-flower{ position:absolute; top:4%; width:27%; height:auto; filter:drop-shadow(0 1px 2px rgba(80,50,30,.25)); }
 .flap-flower.a{ left:27%; rotate:-14deg; }
 .flap-flower.b{ left:49%; top:9%; width:21%; rotate:16deg; }
-.env.open .env-flap{ transform:rotateX(180deg); }
+.env.open .env-flap{ animation:flapOpen .8s linear forwards; }
+.env.open .fl-front{ animation:faceOut .8s linear forwards; }
+.env.open .fl-back{ animation:faceIn .8s linear forwards; }
+@keyframes flapOpen{ 0%{ transform:scaleY(1); animation-timing-function:cubic-bezier(.5,0,.9,.5); } 50%{ transform:scaleY(0); animation-timing-function:cubic-bezier(.1,.5,.5,1); } 100%{ transform:scaleY(-1); } }
+@keyframes faceOut{ 0%, 49.9%{ opacity:1; } 50%, 100%{ opacity:0; } }
+@keyframes faceIn{ 0%, 49.9%{ opacity:0; } 50%, 100%{ opacity:1; } }
 .seal{ position:absolute; left:50%; top:58%; z-index:4; width:17%; aspect-ratio:1; translate:-50% -55%; border-radius:50%; background:radial-gradient(circle at 38% 32%, #e3bde9, #a979bf 55%, #7a4f93); box-shadow:inset 0 0 0 calc(var(--ew) * .012) rgba(255,255,255,.2), 0 2px 5px rgba(60,30,70,.35); transition:transform .5s ease, opacity .5s ease; }
 .seal svg{ display:block; width:100%; height:100%; }
 .env.open .seal{ transform:scale(.4) translateY(-80%); opacity:0; }
@@ -205,10 +195,13 @@ img.decor{ height:auto; filter:drop-shadow(0 12px 16px rgba(30,60,70,.25)); }
 .strip .ph{ aspect-ratio:4/3; }
 .script-paper{ background:#f2ebdc; box-shadow:0 .6cqi 1.4cqi rgba(30,30,50,.18); z-index:2; }
 .script-paper svg{ width:100%; height:100%; display:block; }
-.lined-list{ background:#f6f1e3; background-image:repeating-linear-gradient(180deg, transparent 0 6.3cqi, rgba(120,110,90,.3) 6.3cqi 6.5cqi); padding:3cqi 4cqi 3cqi 5cqi; box-sizing:border-box; box-shadow:0 .6cqi 1.4cqi rgba(30,30,50,.2); z-index:4; }
-.lined-list h3{ margin:0 0 .6cqi; font:600 5cqi/1.3 'Lora', Georgia, serif; font-style:italic; color:#3b4a5a; }
-.lined-list ol{ margin:0; padding-left:5cqi; font:400 4cqi/6.5cqi 'Patrick Hand', cursive; color:#2b2b33; }
-.lined-list li.done{ text-decoration:line-through; text-decoration-color:rgba(200,60,90,.6); text-decoration-thickness:.4cqi; }
+.lined-list{ background:#f6f1e3; padding:3.4cqi 4cqi 2.4cqi; box-sizing:border-box; box-shadow:0 .6cqi 1.4cqi rgba(30,30,50,.2); z-index:4; }
+.lined-list h3{ margin:0 0 1cqi; padding-bottom:1cqi; border-bottom:.35cqi solid rgba(201,80,111,.45); font:600 5cqi/1.3 'Lora', Georgia, serif; font-style:italic; color:#3b4a5a; }
+.lined-list ol{ list-style:none; margin:0; padding:0; font:400 3.4cqi/6.4cqi 'Patrick Hand', cursive; white-space:nowrap; color:#2b2b33;
+  background:repeating-linear-gradient(180deg, transparent 0 6.1cqi, rgba(120,110,90,.32) 6.1cqi 6.4cqi); }
+.lined-list li{ position:relative; padding-left:6cqi; }
+.lined-list li::before{ content:''; position:absolute; left:.4cqi; top:1.5cqi; width:3.2cqi; height:3.2cqi; box-sizing:border-box; border:.35cqi solid #3b4a5a; border-radius:.7cqi; }
+.lined-list li.done::after{ content:''; position:absolute; left:1.5cqi; top:.6cqi; width:1.5cqi; height:3.2cqi; box-sizing:border-box; border:solid #d2456c; border-width:0 .55cqi .55cqi 0; rotate:40deg; }
 .round-stk{ display:grid; place-content:center; text-align:center; border-radius:50%; aspect-ratio:1; box-shadow:0 .4cqi .8cqi rgba(0,0,0,.2), inset 0 0 0 .7cqi rgba(255,255,255,.8); font:700 3cqi/1.1 'Be Vietnam Pro', sans-serif; z-index:7; }
 .xoxo{ font:400 9cqi/1 'Sriracha', cursive; color:#1d1d22; z-index:8; }
 .big-sign{ font:300 22cqi/1 'Be Vietnam Pro', sans-serif; color:#fff; text-shadow:0 .5cqi 1cqi rgba(0,40,50,.25); z-index:3; }
@@ -251,11 +244,11 @@ img.decor{ height:auto; filter:drop-shadow(0 12px 16px rgba(30,60,70,.25)); }
 .movie .s{ flex:1; display:grid; place-items:center; font:400 5cqi/1 'Sriracha', cursive; writing-mode:vertical-rl; }
 
 /* letter collage */
-.newsp{ background:#ece6da; padding:2cqi; box-sizing:border-box; overflow:hidden; font:400 1.9cqi/1.25 'Lora', Georgia, serif; color:rgba(40,40,40,.62); column-count:2; column-gap:2cqi; text-align:justify; z-index:1; box-shadow:0 .4cqi 1cqi rgba(30,30,50,.15); }
-.newsp b{ display:block; column-span:all; font:700 4cqi/1.1 'Lora', Georgia, serif; color:rgba(30,30,30,.75); margin-bottom:1cqi; }
+.newsp{ background:#ece6da; padding:2cqi; box-sizing:border-box; overflow:hidden; font:400 1.9cqi/1.25 'Lora', Georgia, serif; color:rgba(40,40,40,.62); text-align:justify; hyphens:auto; overflow-wrap:anywhere; z-index:1; box-shadow:0 .4cqi 1cqi rgba(30,30,50,.15); }
+.newsp b{ display:block; font:700 3cqi/1.1 'Lora', Georgia, serif; color:rgba(30,30,30,.72); margin:0 0 1cqi; text-align:left; }
 .gridp{ background:#9fd8d0; background-image:linear-gradient(rgba(255,255,255,.55) .25cqi, transparent .25cqi), linear-gradient(90deg, rgba(255,255,255,.55) .25cqi, transparent .25cqi); background-size:4cqi 4cqi; z-index:1; }
 .letter-paper{ background:#f7f3ea; box-shadow:0 .6cqi 1.6cqi rgba(30,30,50,.2); z-index:2; }
-.letter-text{ z-index:6; font:400 4.3cqi/1.55 'Patrick Hand', cursive; color:#2b2b33; overflow:auto; scrollbar-width:thin; }
+.letter-text{ z-index:6; font-family:'Patrick Hand', cursive; font-size:4.3cqi; line-height:1.55; color:#2b2b33; overflow:hidden; }
 .letter-text h2{ margin:0 0 1.2cqi; font:500 6.2cqi/1.2 'Lora', Georgia, serif; font-style:italic; }
 .letter-text p{ margin:0 0 1.4cqi; text-indent:3cqi; }
 .letter-text .sign{ text-align:right; text-indent:0; margin-top:2cqi; }
@@ -265,8 +258,9 @@ img.decor{ height:auto; filter:drop-shadow(0 12px 16px rgba(30,60,70,.25)); }
 .heart-label span{ position:absolute; left:0; right:0; text-align:center; font:400 3cqi/1.15 'Lora', Georgia, serif; color:#2b2b33; }
 
 @media (prefers-reduced-motion: reduce){
-  .scene, .env-flap, .seal, .leaf, .book, .foil{ transition:none; }
-  .blow::after, .ld svg{ animation:none; }
+  .scene, .seal, .leaf, .book, .foil{ transition:none; }
+  .ld svg{ animation:none; }
+  .env.open .env-flap, .env.open .fl-front, .env.open .fl-back{ animation-duration:.01s; }
   .spec img, .bq img.pop{ opacity:1; }
   .seen .spec img, .seen .bq img.pop{ animation:none; }
   .burst{ display:none; }
@@ -285,16 +279,6 @@ img.decor{ height:auto; filter:drop-shadow(0 12px 16px rgba(30,60,70,.25)); }
     <div class="ld-bar"><i id="ldBar"></i></div>
   </div>
 </section>
-
-<section class="scene" id="sWish" aria-label="Ước một điều">
-  <div class="w-top">
-    <small>trước khi mở quà</small>
-    <h1>Ước một điều đi em</h1>
-    <div class="w-dots" id="wDots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
-  </div>
-  <div class="w-bottom"><p class="w-hint" id="wHint" aria-live="polite">Chạm vào bông bồ công anh để thổi</p></div>
-</section>
-<button class="blow" id="blowBtn" type="button" hidden aria-label="Thổi bồ công anh"></button>
 
 <section class="scene" id="sEnv" aria-label="Phong bì">
   <div class="env-wrap">
@@ -377,11 +361,11 @@ img.decor{ height:auto; filter:drop-shadow(0 12px 16px rgba(30,60,70,.25)); }
           <div class="script-paper torn" style="left:40cqi;top:4cqi;width:54cqi;height:66cqi;rotate:3deg"></div>
           <div class="strip" style="left:7cqi;top:6cqi;width:33cqi;rotate:-4deg"><div class="ph" data-n="15"></div><div class="ph" data-n="16"></div><div class="ph" data-n="17"></div><div class="ph" data-n="18"></div></div>
           <span class="tape t-mint" style="left:14cqi;top:3cqi;width:18cqi;rotate:4deg"></span>
-          <div class="lined-list" style="left:44cqi;top:56cqi;width:51cqi;rotate:-2deg"><h3>Những lần đầu</h3><ol id="firsts"></ol></div>
+          <div class="lined-list" style="left:42cqi;top:56cqi;width:54cqi;rotate:-1.5deg"><h3>Những lần đầu</h3><ol id="firsts"></ol></div>
           <div class="stk" data-stk="planeTrail" style="left:46cqi;top:44cqi;width:30cqi;rotate:-6deg"></div>
           <div class="doodle" data-stk="flowerDoodle" style="left:30cqi;top:112cqi;width:14cqi;rotate:-10deg"></div>
-          <div class="stk" data-stk="starGold" style="left:80cqi;top:46cqi;width:12cqi;rotate:16deg"></div>
-          <div class="stk" data-stk="paperclipPink" style="left:84cqi;top:52cqi;width:6cqi;rotate:8deg"></div>
+          <div class="stk" data-stk="starGold" style="left:84cqi;top:116cqi;width:11cqi;rotate:16deg"></div>
+          <div class="stk" data-stk="paperclipPink" style="left:47cqi;top:52cqi;width:5cqi;rotate:-10deg"></div>
         </div>
       </div>
 
@@ -456,8 +440,8 @@ img.decor{ height:auto; filter:drop-shadow(0 12px 16px rgba(30,60,70,.25)); }
           <div class="stk" data-stk="glitterStar" style="left:4cqi;top:3cqi;width:20cqi;rotate:-8deg"></div>
           <div class="heart-label" style="left:37cqi;top:2cqi;width:30cqi"><svg viewBox="0 0 100 86" aria-hidden="true"><path d="M50 82C18 60 4 42 8 24 12 6 36 2 50 22 64 2 88 6 92 24 96 42 82 60 50 82Z" fill="#f7f3ea" stroke="#2b2b33" stroke-width="1.6"/></svg><span style="top:30%" data-text="nhanTraiTim"></span></div>
           <div class="stk" data-stk="planeTrail" style="right:2cqi;top:6cqi;width:34cqi;rotate:-12deg"></div>
-          <div class="doodle" data-stk="asterisk" style="left:6cqi;top:44cqi;width:7cqi"></div>
-          <div class="doodle" data-stk="asterisk" style="left:88cqi;top:92cqi;width:6cqi"></div>
+          <div class="doodle" data-stk="asterisk" style="left:3cqi;top:62cqi;width:7cqi"></div>
+          <div class="doodle" data-stk="asterisk" style="left:50cqi;top:101cqi;width:5cqi"></div>
           <div class="letter-text" id="letterText" style="left:18cqi;top:30cqi;width:70cqi;height:72cqi"></div>
           <div class="script-paper torn" style="left:34cqi;top:104cqi;width:60cqi;height:34cqi;rotate:-4deg"></div>
           <div class="stk" data-stk="camera" style="left:60cqi;top:110cqi;width:34cqi;rotate:8deg"></div>
@@ -535,19 +519,7 @@ const ASSETS = {
   bfM2: "hoa/bfM2.webp",
   bfM3: "hoa/bfM3.webp",
   bfM4: "hoa/bfM4.webp",
-  bfM5: "hoa/bfM5.webp",
-  dandBase: "hoa/dandBase.webp",
-  dandPuff: "hoa/dandPuff.webp",
-  seed0: "hoa/seed0.webp",
-  seed1: "hoa/seed1.webp",
-  seed2: "hoa/seed2.webp",
-  seed3: "hoa/seed3.webp",
-  seed4: "hoa/seed4.webp",
-  seed5: "hoa/seed5.webp",
-  seed6: "hoa/seed6.webp",
-  seed7: "hoa/seed7.webp",
-  seed8: "hoa/seed8.webp",
-  seed9: "hoa/seed9.webp"
+  bfM5: "hoa/bfM5.webp"
 };
 const $ = id => document.getElementById(id);
 const TAU = Math.PI * 2;
@@ -658,7 +630,7 @@ let bookOpen = false;
   });
   (() => {
     const W = 'những ngày nắng nhẹ phố nhỏ có hai người đi cùng nhau qua mùa mưa thư tay gửi em một chút thương mỗi sáng cà phê sữa đá hoa nở bên hiên ký ức kể lại chuyện xưa hẹn hò cuối tuần'.split(' '), R = rng(11);
-    let s = '<b>Tin vui trong ngày</b>';
+    let s = '<b>Tin vui</b>';
     for (let p = 0; p < 9; p++){ s += '<span>'; for (let i = 0; i < 40; i++) s += W[Math.floor(R() * W.length)] + ' '; s += '</span> '; }
     $('news1').innerHTML = s; $('news1').setAttribute('aria-hidden', 'true');
   })();
@@ -812,7 +784,17 @@ let bookOpen = false;
   const stop = () => { if (drawing){ drawing = false; lastP = null; if (!revealed) checkCleared(); } };
   foil.addEventListener('pointerup', stop); foil.addEventListener('pointercancel', stop);
 
-  window.onBookShown = () => { window.__bookOpen = true; layoutBook(); $('nextBtn').focus({ preventScroll:true }); };
+  /* letter text always fits its paper, no scrollbar */
+  function fitLetter(){
+    const el = $('letterText'); let size = 4.3;
+    el.style.fontSize = size + 'cqi';
+    while (el.scrollHeight > el.clientHeight + 1 && size > 3){ size -= .1; el.style.fontSize = size.toFixed(2) + 'cqi'; }
+  }
+  fitLetter();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLetter);
+  addEventListener('resize', fitLetter);
+
+  window.onBookShown = () => { window.__bookOpen = true; layoutBook(); fitLetter(); $('nextBtn').focus({ preventScroll:true }); };
   layoutBook();
 })();
 
@@ -837,8 +819,7 @@ let bookOpen = false;
     const loadImg = src => new Promise(res => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; });
     const cv = $('fx'), g = cv.getContext('2d');
     const bookEl = $('sBook');
-    const blowBtn = $('blowBtn'), envBtn = $('envBtn'), wHint = $('wHint');
-    const wDots = [...$('wDots').children];
+    const envBtn = $('envBtn');
     let W = 0, H = 0, DPR = 1;
     function size(){
       DPR = Math.min(2, window.devicePixelRatio || 1); W = innerWidth; H = innerHeight;
@@ -1136,108 +1117,6 @@ let bookOpen = false;
       }
     }
 
-    /* ---------- wish: watercolour dandelion ---------- */
-    const DM = {"w": 281, "h": 485, "cx": 153.2, "cy": 129.89999999999998, "r": 150, "sx": 106.0, "sy": 483.0, "sw": 19.0, "seeds": ["seed0", "seed1", "seed2", "seed3", "seed4", "seed5", "seed6", "seed7", "seed8", "seed9"]};
-    const bgc = document.createElement('canvas');
-    let WS = null, DI = null;
-    function tintCanvas(im){
-      if (!im) return null;
-      const c2 = document.createElement('canvas'); c2.width = im.width; c2.height = im.height;
-      const x = c2.getContext('2d'); x.drawImage(im, 0, 0);
-      x.globalCompositeOperation = 'source-in';
-      const gr = x.createLinearGradient(0, 0, 0, c2.height); gr.addColorStop(0, '#f4f7ff'); gr.addColorStop(1, '#b4c9f0');
-      x.fillStyle = gr; x.fillRect(0, 0, c2.width, c2.height);
-      return c2;
-    }
-    async function loadDandelion(){
-      const [base, puff] = await Promise.all([loadImg(ASSETS.dandBase), loadImg(ASSETS.dandPuff)]);
-      const seeds = (await Promise.all(DM.seeds.map(k => loadImg(ASSETS[k])))).filter(Boolean);
-      DI = { light:{ base, puff, seeds }, dark:{ base:tintCanvas(base), puff:tintCanvas(puff), seeds:seeds.map(tintCanvas) } };
-    }
-    function buildPaper(){
-      bgc.width = Math.round(W * DPR); bgc.height = Math.round(H * DPR);
-      const x = bgc.getContext('2d'); x.setTransform(DPR, 0, 0, DPR, 0, 0);
-      const dk = isDark(), R = rng(42);
-      x.fillStyle = dk ? '#121a30' : '#fbf8f2'; x.fillRect(0, 0, W, H);
-      const washes = dk ? ['rgba(80,110,190,.22)', 'rgba(150,100,170,.14)', 'rgba(60,90,150,.2)']
-                        : ['rgba(150,185,232,.2)', 'rgba(242,190,204,.16)', 'rgba(250,226,176,.14)', 'rgba(170,205,235,.16)'];
-      for (let i = 0; i < 16; i++){
-        const cx = R() * W, cy = R() * H, rr = (.15 + R() * .35) * Math.max(W, H), gr = x.createRadialGradient(cx, cy, 0, cx, cy, rr);
-        gr.addColorStop(0, washes[i % washes.length]); gr.addColorStop(1, 'rgba(255,255,255,0)');
-        x.fillStyle = gr; x.fillRect(cx - rr, cy - rr, rr * 2, rr * 2);
-      }
-      if (dk && WS){
-        const gr = x.createRadialGradient(WS.hx, WS.hy, 0, WS.hx, WS.hy, WS.R * 2.4);
-        gr.addColorStop(0, 'rgba(160,190,245,.22)'); gr.addColorStop(1, 'rgba(160,190,245,0)');
-        x.fillStyle = gr; x.fillRect(0, 0, W, H);
-      }
-      x.fillStyle = dk ? 'rgba(255,255,255,.035)' : 'rgba(80,70,60,.035)';
-      for (let i = 0; i < 2600; i++) x.fillRect(R() * W, R() * H, 1.2, 1.2);
-      const vg = x.createRadialGradient(W / 2, H / 2, Math.min(W, H) * .3, W / 2, H / 2, Math.max(W, H) * .78);
-      vg.addColorStop(0, 'rgba(0,0,0,0)'); vg.addColorStop(1, dk ? 'rgba(0,0,0,.35)' : 'rgba(120,100,80,.08)');
-      x.fillStyle = vg; x.fillRect(0, 0, W, H);
-    }
-    function setupWish(){
-      const Rpx = Math.min(W * .36, H * .21), k = Rpx / DM.r;
-      const hx = W * (W < H ? .52 : .47), hy = H * .44;
-      if (!WS) WS = { free:[], blows:4, gust:0, puff:1, puffT:1,
-        amb:Array.from({ length:6 }, (_, i) => ({ x:Math.random(), y:.08 + Math.random() * .38, s:.45 + Math.random() * .35, ph:Math.random() * TAU, v:.006 + Math.random() * .01, i })) };
-      Object.assign(WS, { hx, hy, R:Rpx, k });
-      buildPaper();
-      const sz = Rpx * 2.3;
-      Object.assign(blowBtn.style, { left:(hx - sz / 2) + 'px', top:(hy - sz / 2) + 'px', width:sz + 'px', height:sz + 'px' });
-    }
-    function drawSeed(img, x0, y0, sc, rot, a){
-      if (!img || a <= 0) return;
-      const w = img.width * sc, h = img.height * sc;
-      g.save(); g.translate(x0, y0); g.rotate(rot); g.globalAlpha = a; g.drawImage(img, -w / 2, -h / 2, w, h); g.restore();
-    }
-    function drawWish(now, t, dt){
-      if (!WS || !DI) return;
-      g.drawImage(bgc, 0, 0, W, H);
-      const dk = isDark(), set = dk ? DI.dark : DI.light, k = WS.k, ns = set.seeds.length;
-      for (const a of WS.amb){
-        a.x += a.v * dt * (1 + WS.gust * 4); a.y -= a.v * .3 * dt;
-        if (a.x > 1.1){ a.x = -.1; a.y = .08 + Math.random() * .38; }
-        drawSeed(set.seeds[a.i % ns], a.x * W, a.y * H, k * a.s, Math.sin(t * .9 + a.ph) * .2, .85);
-      }
-      WS.gust = Math.max(0, WS.gust - dt * .8);
-      WS.puff += (WS.puffT - WS.puff) * Math.min(1, dt * 2.5);
-      const ox = WS.hx - DM.cx * k, oy = WS.hy - DM.cy * k, bx = ox + DM.sx * k, by = oy + DM.sy * k;
-      const ang = WS.gust * .05 + Math.sin(t * .8) * .01;
-      g.save(); g.translate(bx, H + 4); g.rotate(ang); g.translate(-bx, -(H + 4));
-      if (by < H + 4){
-        g.strokeStyle = dk ? 'rgba(200,215,245,.85)' : 'rgba(66,100,160,.8)'; g.lineWidth = DM.sw * k; g.lineCap = 'round';
-        g.beginPath(); g.moveTo(bx, by - 8 * k); g.lineTo(bx - 3 * k, H + 8); g.stroke();
-      }
-      g.drawImage(set.base, ox, oy, DM.w * k, DM.h * k);
-      if (WS.puff > .01){ g.globalAlpha = WS.puff; g.drawImage(set.puff, ox, oy, DM.w * k, DM.h * k); g.globalAlpha = 1; }
-      g.restore();
-      const wind = W * .15 + WS.gust * W * .3, kk = Math.min(1, dt * 1.1);
-      for (let i = WS.free.length - 1; i >= 0; i--){
-        const p = WS.free[i];
-        p.vx += (wind * (.75 + .35 * Math.sin(t * .7 + p.ph)) - p.vx) * kk;
-        p.vy += ((-30 + Math.sin(t * 2.1 + p.ph) * 40) * (H / 800) - p.vy) * kk;
-        p.x += p.vx * dt; p.y += p.vy * dt; p.rot += p.vr * dt;
-        if (p.x > W + 120 || p.y < -120){ WS.free.splice(i, 1); continue; }
-        drawSeed(set.seeds[p.i % ns], p.x, p.y, k * p.s, p.rot, clamp((now - p.born) / 250));
-      }
-    }
-    function blow(){
-      if (stage !== 'wish' || !WS || WS.blows <= 0) return;
-      const now = performance.now(), kd = 4 - WS.blows;
-      WS.blows--; wDots[kd].classList.add('on'); WS.gust = 1; blowBtn.classList.add('used');
-      WS.puffT = WS.blows / 4;
-      const n = reduce() ? 4 : 11;
-      for (let i = 0; i < n; i++){
-        const a = -2.3 + Math.random() * 3.2, d = WS.R * (.45 + Math.random() * .5);
-        WS.free.push({ x:WS.hx + Math.cos(a) * d, y:WS.hy + Math.sin(a) * d, vx:Math.cos(a) * 60 + W * .06, vy:Math.sin(a) * 60 - 40,
-          ph:Math.random() * TAU, rot:(Math.random() - .5) * .6, vr:(Math.random() - .5) * .8, s:.75 + Math.random() * .4, i:Math.floor(Math.random() * 20), born:now + i * 40 });
-      }
-      wHint.textContent = WS.blows ? `Thổi thêm ${WS.blows} lần nữa` : 'Điều ước đã bay đi rồi';
-      if (!WS.blows){ blowBtn.hidden = true; setTimeout(startWall, reduce() ? 500 : 2200); }
-    }
-
     /* ---------- stages ---------- */
     let stage = 'loading', running = true, lastF = 0;
     let L1 = null, wallT0 = 0, envShown = false;
@@ -1245,13 +1124,12 @@ let bookOpen = false;
     const TX = 4.4;
 
     function startWall(){
-      stage = 'wall'; $('sWish').classList.remove('on');
+      stage = 'wall'; $('sLoad').classList.remove('on');
       L1 = makeRings(W / 2, H / 2, 21); wallT0 = performance.now();
       spawnBF(reduce() ? 0 : 12);
     }
     function drawWall(now, t, dt){
       const T = (now - wallT0) / 1000;
-      if (T < 1.5) drawWish(now, t, dt);
       baseFill(T < TX ? clamp((T - .3) / 1) : 1 - clamp((T - TX - .3) / .8));
       if (!envShown && T > 1.6){ envShown = true; $('sEnv').classList.add('on'); }
       if (T > TX && !bfLeaving) bfLeaving = true;
@@ -1266,7 +1144,7 @@ let bookOpen = false;
         }
         return { x, y, s, a };
       });
-      if (T > TX + 2.3){ stage = 'env'; L1 = null; envBtn.focus({ preventScroll:true }); }
+      if (T > TX + 2.3){ stage = 'env'; L1 = null; }
     }
 
     envBtn.addEventListener('click', () => {
@@ -1314,8 +1192,7 @@ let bookOpen = false;
       const dt = Math.min(.05, lastF ? (now - lastF) / 1000 : 0), t = now / 1000;
       lastF = now;
       g.clearRect(0, 0, W, H);
-      if (stage === 'wish') drawWish(now, t, dt);
-      else if (stage === 'wall') drawWall(now, t, dt);
+      if (stage === 'wall') drawWall(now, t, dt);
       else if (stage === 'burst' || stage === 'cover' || stage === 'scatter') drawBurst(now);
       if (BF.length) updBF(dt, t, now);
       requestAnimationFrame(frame);
@@ -1326,20 +1203,16 @@ let bookOpen = false;
       size(); setP(.08);
       await new Promise(r => setTimeout(r, 30));
       await buildSprites(p => setP(.08 + p * .72));
-      await loadDandelion(); setupWish(); setP(.88);
+      setP(.88);
       await Promise.race([document.fonts ? document.fonts.ready : Promise.resolve(), new Promise(r => setTimeout(r, 2500))]);
       setP(1);
       await new Promise(r => setTimeout(r, reduce() ? 0 : 450));
-      stage = 'wish';
-      $('sLoad').classList.remove('on'); $('sWish').classList.add('on'); blowBtn.hidden = false;
+      startWall();
     }
 
     // photo flowers on the envelope flap and the cover
     $('flapArt').innerHTML = `<img class="flap-flower a" src="${ASSETS.wildRose}" alt=""><img class="flap-flower b" src="${ASSETS.pinkBlossom}" alt="">`;
-    blowBtn.addEventListener('click', blow);
-    window.addEventListener('resize', () => { size(); if (stage === 'wish' || stage === 'loading') setupWish(); });
-    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (WS) setupWish(); });
-    new MutationObserver(() => { if (WS) setupWish(); }).observe(document.documentElement, { attributes:true, attributeFilter:['data-theme'] });
+    window.addEventListener('resize', size);
 
     requestAnimationFrame(frame);
     boot();
