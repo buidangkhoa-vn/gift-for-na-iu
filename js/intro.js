@@ -17,6 +17,7 @@
   const PHOTO = ['roses3', 'wildRose', 'peonyHot', 'peonyWc', 'peonyPale', 'peonySticker', 'carnation', 'pinkgold', 'pinklily', 'pinkBlossom', 'azalea', 'dahliaBlue', 'blueWc'];
   const PAINTED = ['hong-1', 'hong-2', 'hong-3', 'hong-4', 'hong-5', 'hong-6', 'hong-7', 'hong-8', 'cam-chuong-1', 'cam-chuong-2', 'cam-chuong-3', 'hoa-muc-1', 'hoa-muc-2', 'hoa-muc-3', 'dong-tien-1', 'dong-tien-2'];
   const ROSE = ['roses3', 'wildRose', 'hong-1', 'hong-2', 'hong-3', 'hong-4', 'hong-5', 'hong-6', 'hong-7', 'hong-8'];
+  const CENTER = 'hongTam';   // bông hồng giữa tường hoa (assets/hoa/hongTam.webp, đã căn tâm sẵn)
   const BIG = ['roses3', 'peonyHot', 'peonyWc', 'peonySticker', 'carnation', 'dahliaBlue'];
   /* bướm: top = xoè cánh nhìn từ trên (ax = vị trí thân), còn lại nhìn ngang (ax, ay = gốc cánh; face -1 đầu quay trái) */
   const BUTTERFLIES = [
@@ -38,9 +39,9 @@
   }
 
   /* ---------- hoa: { img, r } với r = "bán kính" của bông hoa tính theo pixel ảnh ---------- */
-  const flowers = [], idx = { photo:[], rose:[], big:[], all:[] }, bfImgs = [];
+  const flowers = [], idx = { photo:[], rose:[], big:[], all:[], center:-1 }, bfImgs = [];
   async function loadAll(onp){
-    const keys = [...PHOTO, ...PAINTED], total = keys.length + BUTTERFLIES.length; let done = 0;
+    const keys = [...PHOTO, ...PAINTED], total = keys.length + BUTTERFLIES.length + 1; let done = 0;
     const tick = () => onp(++done / total);
     await Promise.all([
       ...keys.map(async k => {
@@ -52,6 +53,10 @@
         if (ROSE.includes(k)) idx.rose.push(i);
         if (BIG.includes(k)) idx.big.push(i);
       }),
+      (async () => {   // bông giữa: ảnh vuông, tâm hoa nằm đúng giữa ảnh nên xoay tròn đều
+        const img = await loadImg(path(CENTER)); tick();
+        if (img) idx.center = flowers.push({ img, r:img.width / 2.15 }) - 1;
+      })(),
       ...BUTTERFLIES.map(async b => { const im = await loadImg(`assets/buom/${b.f}.webp`); tick(); if (im) bfImgs.push(Object.assign({ im }, b)); })
     ]);
   }
@@ -77,7 +82,7 @@
       const baseRot = R() * TAU;
       for (let k = 0; k < n; k++) ring.items.push({
         a:k * TAU / n + (R() - .5) * .12, rad:i ? rb * (.98 + R() * .3) : rb * 1.35,
-        f:i ? pat[k % pat.length] : any(idx.big.length ? idx.big : idx.all),
+        f:i ? pat[k % pat.length] : (c => idx.center >= 0 ? idx.center : c)(any(idx.big.length ? idx.big : idx.all)),
         rot:baseRot + k * TAU / n, spin:i ? (R() - .5) * .25 : .7, dr:(R() - .5) * s * .14, j:R()   // bông giữa xoay đều ~9 giây một vòng
       });
       if (i){
